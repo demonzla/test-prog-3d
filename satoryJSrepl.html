@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf8">
+	<title title=""></title>
+        <script src="./avs-rpc.min.js"></script>
+	<script src="./node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
+</head>
+
+<body>
+<div id="output", style="width: 100% ;height: 50px" ></div>	
+<div><input type="text" id="repl" onkeypress="fu(this, event)"></div>
+	<script>
+		var repl = document.getElementById("repl");
+		var output = document.getElementById("output");
+		socket = io('http://localhost:4141');
+                rpc = new avs.ioRpc(socket);
+                remote = rpc.remote('evalxxx');
+
+                function fu(t, event)
+		{
+			if (event.keyCode == 13) {
+				remote.evalxxx(repl.value, function(user, err){
+                                  if (err)  output.innerHTML = "remote error in evalxxx: " + err;
+                                  else output.innerHTML = "output: " + user;});
+				repl.value = "";
+			}
+		}
+	</script>
+</body>
+</html>
